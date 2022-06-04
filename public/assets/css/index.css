@@ -1,0 +1,296 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Roboto&display=swap');
+
+/* Общие настройки страницы */
+
+:root {
+    --main-bg-color: white;
+    --main-color: #0E0E0E;
+    --yellow-color: rgba(255, 180, 21, 0.75);
+}
+
+body {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    background-image: url("../images/gradient.png");
+}
+
+.main {
+    margin-top: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1250px;
+    background-color: var(--main-bg-color);
+}
+
+.content {
+    padding-left: 60px;
+    padding-right: 60px;
+    padding-top: 20px;
+}
+
+::selection {
+    background-color: var(--yellow-color);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #333333;
+}
+
+::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: var(--main-color);
+}
+
+.block {
+    margin: 30px;
+}
+
+.center {
+    width: 50%;
+    margin: auto auto;
+    text-align: center;
+}
+
+.flex-pic-right {
+    display: grid;
+    grid-template-columns: 4fr 5fr;
+    grid-gap: 0;
+    margin: 30px 30px 100px 30px;
+}
+
+.flex-pic-left {
+    display: grid;
+    grid-template-columns: 5fr 4fr;
+    grid-gap: 0;
+    margin: 30px 30px 100px 30px;
+}
+
+
+
+/* Основные шрифты */
+
+h1 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}
+
+h2, label {
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px;
+    /*font-weight: bold;*/
+}
+
+a {
+    color: var(--main-color);
+}
+
+.inline {
+    display: inline-block;
+}
+
+/* Заголовок-обложка */
+
+.title {
+    position: relative;
+    text-align: center;
+}
+
+.headline {
+    position: absolute;
+    bottom: -0.24em;
+    left: 1px;
+    font-family: 'Playfair Display', serif;
+    color: var(--main-bg-color);
+    font-style: normal;
+    font-weight: 700;
+    font-size: clamp(100px, 7.5vw, 175px);
+    white-space: nowrap;
+    overflow-wrap: break-word;
+}
+
+.title img {
+    width: 100%;
+}
+
+
+
+/* Бутерброды из пикч */
+
+.stack img {
+    width: 520px;
+    height: 320px;
+}
+
+.stack {
+    position: relative;
+    text-align: center;
+    z-index: 10;
+}
+
+.stack-bg-right {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+    margin: -150px 0 0 -230px;
+
+    z-index: -1;
+}
+
+.stack-bg-left {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+    margin: -150px 0 0 -290px;
+
+    z-index: -1;
+}
+
+/* Навбар */
+
+.navbar {
+    overflow: hidden;
+    background-color: var(--main-color);
+    position: fixed;
+    width: 100%;
+    z-index: 25;
+}
+
+.navbar-links {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1250px;
+}
+
+.navbar a {
+    float: left;
+    align-items: center;
+    justify-items: center;
+    display: block;
+    color: var(--main-bg-color);
+    text-align: center;
+    text-decoration: none;
+    padding: 15px 20px;
+    font-size: 24px;
+    font-family: 'Playfair Display', serif;
+}
+
+.navbar a:hover {
+    color: black;
+    background-image: url("../images/YellowBrut1.png");
+    font-weight: bold;
+}
+
+@media screen and (max-width: 1150px) {
+
+    .flex-pic-right {
+        display: flex;
+        flex-flow: column;
+        margin: 30px 30px 60px 30px;
+    }
+
+    .flex-pic-right .stack {
+        margin-top: 10px;
+        margin-right: 50px;
+    }
+
+    .flex-pic-left {
+        display: flex;
+        flex-flow: column-reverse;
+        margin: 30px 30px 60px 30px;
+    }
+
+    .flex-pic-left .stack {
+        margin-top: 10px;
+        margin-right: -50px;
+    }
+
+}
+
+.clickable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.form {
+    border-radius: 20px;
+    box-sizing: border-box;
+    height: 500px;
+    width: 320px;
+}
+
+.input-container {
+    height: 50px;
+    position: relative;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.input {
+    background-color:var(--main-color);;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 20px 0;
+    width: 170%;
+}
+
+
+.placeholder {
+    color: #656565;
+    left: 20px;
+    line-height: 14px;
+    pointer-events: none;
+    position: absolute;
+    transform-origin: 0 50%;
+    transition: transform 200ms, color 200ms;
+    top: 20px;
+}
+
+.input:focus ~ .placeholder,
+.input:not(:placeholder-shown) ~ .placeholder {
+    transform: translateY(-40px) translateX(10px) scale(0.80);
+}
+
+.input:not(:placeholder-shown) ~ .placeholder {
+    color: var(--main-color);
+    font-weight: bold;
+}
+
+.input:focus ~ .placeholder {
+    color: var(--main-color);
+    font-weight: bold;
+}
+
+.submit {
+    background-color: var(--main-color);
+    border-radius: 12px;
+    border: 0;
+    color: #eee;
+    cursor: pointer;
+    font-size: 18px;
+    height: 50px;
+    margin-top: 20px;
+    text-align: center;
+    width: 170%;
+}
+
+.submit:active {
+    background-color: #383838;
+}

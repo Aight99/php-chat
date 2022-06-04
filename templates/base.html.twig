@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Чатик</title>
+    <link rel="stylesheet" href="../public/assets/css/index.css">
+    <link rel="icon" href="../public/assets/images/icon.ico">
+    {#    <link rel="stylesheet" href="/assets/css/index.css">#}
+    {#    <link rel="icon" href="/assets/images/icon.ico">#}
+    {% block javascripts %}{% endblock %}
+</head>
+
+<body>
+<div class="navbar">
+    <div class="navbar-links">
+        <a href="#home">Главная</a>
+        <!--            <a href="src/TimeBomb.html">Просто бомба</a>-->
+        <!--            <a href="src/ArtGallery.html">Картиночки</a>-->
+        <!--            <a href="src/WhackAMole.html">Бить пилотов!</a>-->
+        <!--            <a href="src/TwentyOnePilots.html">Пилотить кротов!</a>-->
+    </div>
+</div>
+
+<div class="main" id="home">
+    <div class="title">
+        <img src="../public/assets/images/drive.png" alt="Перезагрузи">
+        {#            <img src="/assets/images/drive.png" alt="Перезагрузи">#}
+        <div class="headline">Чатик</div>
+    </div>
+
+    <div class="content center">
+
+        <div class="block">
+            {% block content %}{% endblock %}
+
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

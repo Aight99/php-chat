@@ -1,0 +1,57 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+    <form method="post">
+        <div id="registerForm" style="display: none">
+            <h1>Регистрация</h1>
+            <p id="registerPageLink" class="clickable" onclick="swapForms()">Если уже состоите в секте, нажмите сюда!</p>
+            <div class="form">
+                <div class="input-container">
+                    <input id="reg_login" class="input" type="text" placeholder=" " />
+                    <label for="reg_login" class="placeholder">Наименование</label>
+                </div>
+                <div class="input-container">
+                    <input id="reg_password" class="input" type="password" placeholder=" " />
+                    <label for="reg_password" class="placeholder">Пароль</label>
+                </div>
+                <div class="input-container">
+                    <input id="reg_password2" class="input" type="password" placeholder=" " />
+                    <label for="reg_password2" class="placeholder">Повтор пароля</label>
+                </div>
+                <button type="submit" class="submit">Вступить в секту</button>
+            </div>
+        </div>
+        <div id="loginForm">
+            <h1>Вход</h1>
+            <p id="registerPageLink" class="clickable" onclick="swapForms()">Чтобы вступить в секту, нажмите сюда!</p>
+            <div class="form">
+                <div class="input-container">
+                    <input id="auth_login" class="input" type="text" placeholder=" " />
+                    <label for="auth_login" class="placeholder">Наименование</label>
+                </div>
+                <div class="input-container">
+                    <input id="auth_password" class="input" type="password" placeholder=" " />
+                    <label for="auth_password" class="placeholder">Пароль</label>
+                </div>
+                <button type="submit" class="submit">Войти</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        function swapForms() {
+            let loginForm = document.getElementById("loginForm");
+            let registerForm = document.getElementById("registerForm");
+            if (loginForm.style.display === "none") {
+                loginForm.style.display = "block";
+                registerForm.style.display = "none";
+            } else  {
+                loginForm.style.display = "none";
+                registerForm.style.display = "block";
+            }
+        }
+    </script>
+{% endblock %}
+
