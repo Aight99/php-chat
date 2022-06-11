@@ -1,5 +1,7 @@
 <?php
 
+namespace Model;
+
 class Message
 {
     public const PUBLIC_MESSAGE = -1;

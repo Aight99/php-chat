@@ -1,13 +1,13 @@
 {% extends "base.html.twig" %}
 
 {% block content %}
-    <form method="post">
+{#    <form action="/" method="get">#}
         <div id="registerForm" style="display: none">
             <h1>Регистрация</h1>
             <p id="registerPageLink" class="clickable" onclick="swapForms()">Если уже состоите в секте, нажмите сюда!</p>
             <div class="form">
                 <div class="input-container">
-                    <input id="reg_login" class="input" type="text" placeholder=" " />
+                    <input id="reg_login" class="input" type="text" placeholder=" "/>
                     <label for="reg_login" class="placeholder">Наименование</label>
                 </div>
                 <div class="input-container">
@@ -18,7 +18,7 @@
                     <input id="reg_password2" class="input" type="password" placeholder=" " />
                     <label for="reg_password2" class="placeholder">Повтор пароля</label>
                 </div>
-                <button type="submit" class="submit">Вступить в секту</button>
+                <button type="submit" class="submit" onclick="registerRequest()" >Вступить в секту</button>
             </div>
         </div>
         <div id="loginForm">
@@ -33,10 +33,10 @@
                     <input id="auth_password" class="input" type="password" placeholder=" " />
                     <label for="auth_password" class="placeholder">Пароль</label>
                 </div>
-                <button type="submit" class="submit">Войти</button>
+                <button type="submit" class="submit" onclick="loginRequest()">Войти</button>
             </div>
         </div>
-    </form>
+{#    </form>#}
 {% endblock %}
 
 {% block javascripts %}
@@ -52,6 +52,20 @@
                 registerForm.style.display = "block";
             }
         }
+
+        function registerRequest() {
+            let login = document.getElementById("reg_login").value;
+            let password1 = document.getElementById("reg_password").value;
+            let password2 = document.getElementById("reg_password2").value;
+            location.href = "/?action=reg&reg_login=" + login + "&reg_password=" + password1 + "&reg_password2=" + password2;
+        }
+
+        function loginRequest() {
+            let login = document.getElementById("auth_login").value;
+            let password = document.getElementById("auth_password").value;
+            location.href = "/?action=auth&auth_login=" + login + "&auth_password=" + password;
+        }
+
     </script>
 {% endblock %}
 

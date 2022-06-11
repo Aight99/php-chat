@@ -1,8 +1,13 @@
 
 <?php
 
-// В Composer.json нет автозагрузки моих классов
+use Controller\LoginController;
+use Model\User;
+use Model\Message;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
+// В Composer.json нет автозагрузки моих классов
 spl_autoload_register(function ($class) {
     $path = dirname(__DIR__ ) . '/src/';
     $extension = '.php';
@@ -12,20 +17,44 @@ spl_autoload_register(function ($class) {
 });
 require_once(dirname(__DIR__ ).'/vendor/autoload.php');
 
-use DataLoad\MySQLSource;
-use DataLoad\JsonSource;
-use DataLoad\UsersRepository;
-use DataLoad\MessagesRepository;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Twig\Loader\FilesystemLoader;
-use Twig\Environment;
+
+$application = new Application();
+echo $application->run();
 
 
-//echo "hui";
-$loader = new FilesystemLoader(dirname(__DIR__) . "/templates/");
-$twig = new Environment($loader);
-$chat = new ChatController($twig);
+
+
+
+//$loader = new FilesystemLoader(dirname(__DIR__) . "/templates/");
+//$twig = new Environment($loader);
+//$chat = new LoginController($twig);
+//
+//$isAuthLoginSet = isset($_POST["login"]) && $_POST["login"] != "";
+//$isAuthPasswordSet = isset($_POST["password"]) && $_POST["password"] != "";
+//$isRegLoginSet = isset($_POST["login"]) && $_POST["login"] != "";
+//$isRegPasswordSet = isset($_POST["password"]) && $_POST["password"] != "";
+//$isRegPassword2Set = isset($_POST["message"]) && $_POST["message"] != "";
+//
+//if ($isAuthLoginSet && $isAuthPasswordSet) {
+//    $login = $_POST["auth_login"];
+//    $password = $_POST["auth_password"];
+//    echo "Проверяем бд <br> Пользователь найден <br> Добро пожаловать, {$login} <br> {$password}";
+//    echo "<script>console.log('Проверяем бд  Пользователь найден <br> Добро пожаловать," . $login . "' );</script>";
+//} else if ($isRegLoginSet && $isRegPasswordSet && $isRegPassword2Set) {
+//    $login = $_POST["reg_login"];
+//    $password = $_POST["reg_password"];
+//    $password2 = $_POST["reg_password2"];
+//    echo "Проверяем бд <br> Пользователь найден <br> Добро пожаловать, {$login} <br> {$password} <br> {$password2}";
+//    echo "<script>console.log('Зареган под паролем " . $password . "' );</script>";
+//} else if ($isAuthLoginSet || $isAuthPasswordSet || $isRegLoginSet || $isRegPasswordSet || $isRegPassword2Set) {
+//    echo "Invalid input <br> Вы умерли от взлома жопы <br> бум";
+//    echo "<script>console.log('Вы умерли от взлома жопы: ');</script>";
+//}
+
+
+
+
+
 
 
 //function logDebug(string $message = "")
@@ -78,48 +107,3 @@ $chat = new ChatController($twig);
 //    printLoginForm();
 //}
 //
-//function printLoginForm() {
-//    echo "
-//    <form method=\"post\">
-//        <div>
-//            <label>
-//                Login
-//                <input type=\"text\" name=\"login\" id=\"login\" onfocus=\"this.value=''\">
-//            </label>
-//        </div>
-//        <div>
-//            <label>
-//                Password
-//                <input type=\"password\" name=\"password\" id=\"password\" onfocus=\"this.value=''\">
-//            </label>
-//        </div>
-//        <button>Register</button>
-//    </form>
-//    ";
-//}
-//
-//function printMessageForm() {
-//    echo "
-//    <form method=\"post\">
-//        <div>
-//            <label>
-//                Your message is
-//                <input type=\"text\" name=\"message\" id=\"message\" onfocus=\"this.value=''\">
-//            </label>
-//        </div>
-//        <button>Send</button>
-//    </form>
-//    ";
-//}
-
-?>
-
-<!--<style>-->
-<!--    div {-->
-<!--        margin: 10px;-->
-<!--    }-->
-<!---->
-<!--    button {-->
-<!--        margin-left: 10px;-->
-<!--    }-->
-<!--</style>-->

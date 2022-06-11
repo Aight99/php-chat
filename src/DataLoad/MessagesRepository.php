@@ -2,7 +2,7 @@
 
 namespace DataLoad;
 
-use Message;
+use Model\Message;
 
 class MessagesRepository
 {
