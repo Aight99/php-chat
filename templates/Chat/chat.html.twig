@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>Добро пожаловать, {{ user.login }}</h1>
+    {{ dump(messages) }}
     {% for message in messages %}
         <p>
             {{constant('PUBLIC_MESSAGE', message)}} <br>
