@@ -13,27 +13,13 @@ use PDO;
 
 class UserActiveRecord extends User
 {
-//    private string $login;
-//    private string $password;
     private PDO $connection;
 
     public function __construct(string $login, string $password)
     {
-//        $this->login = $login;
-//        $this->password = $password;
         parent::__construct($login, $password);
         $this->connection = new PDO('mysql:host=localhost;dbname=chat', 'root', '12345Qwerty');
     }
-
-//    public function getLogin(): string
-//    {
-//        return $this->login;
-//    }
-//
-//    public function getPassword(): string
-//    {
-//        return $this->password;
-//    }
 
     public function getAll()
     {
@@ -43,7 +29,7 @@ class UserActiveRecord extends User
         return $stmt->fetchAll();
     }
 
-    public function getByLogin($login): ?UserActiveRecord // Ну это id
+    public function getByLogin(string $login): ?UserActiveRecord // Ну это id
     {
         $sql = 'SELECT * from user WHERE login= :login';
         $stmt = $this->connection->prepare($sql);
@@ -57,7 +43,7 @@ class UserActiveRecord extends User
         }
     }
 
-    public function getByPassword($password)
+    public function getByPassword(string $password)
     {
         $sql = 'SELECT * from user WHERE password= :password';
         $stmt = $this->connection->prepare($sql);
