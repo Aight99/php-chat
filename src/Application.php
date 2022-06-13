@@ -8,6 +8,7 @@ use DataLoad\JsonSource;
 use DataLoad\MessagesRepository;
 use DataLoad\UsersRepository;
 use Model\User;
+use Model\UserActiveRecord;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -26,38 +27,62 @@ class Application
 
     public function run(): string
     {
-        $isAuthLoginSet = isset($_GET["auth_login"]) && $_GET["auth_login"] != "";
-        $isAuthPasswordSet = isset($_GET["auth_password"]) && $_GET["auth_password"] != "";
-        $isRegLoginSet = isset($_GET["reg_login"]) && $_GET["reg_login"] != "";
-        $isRegPasswordSet = isset($_GET["reg_password"]) && $_GET["reg_password"] != "";
-        $isRegPassword2Set = isset($_GET["reg_password2"]) && $_GET["reg_password2"] != "";
-        $isMessageSet = isset($_GET["message"]) && $_GET["message"] != "";
+        $cookieTime = 3600;
 
-        $usersJsonPath = dirname(__DIR__) . '/src/' . "DataLoad\JsonFiles\Users.json";
-        $messagesJsonPath = dirname(__DIR__) . '/src/' . "DataLoad\JsonFiles\Messages.json";
-        $userRepository = new UsersRepository(new JsonSource($usersJsonPath));
-        $messageRepository = new MessagesRepository(new JsonSource($messagesJsonPath));
 
-        if ($isMessageSet) {
-            return $_GET["message"] . " " . $_GET["receiver"];
+//        $userRepository = new UsersRepository(new JsonSource($usersJsonPath));
+//        $messageRepository = new MessagesRepository(new JsonSource($messagesJsonPath));
+        if ($this->isLoggedOut()) {
+            setcookie ("login", "", time() - $cookieTime);
+            return $this->loginController->render();
         }
-        if ($isAuthLoginSet) {
-            $user = new User($_GET["auth_login"], "123");
-//            $messages = $messageRepository->getMessageList();
+        if ($this->isSessionExist()) {
+            if ($this->isMessageSent()) {
+                $user = new UserActiveRecord($_COOKIE["login"], "123");
+                return $this->chatController->render($user);
+                return $_GET["message"] . " " . $_GET["receiver"];
+            }
+            $user = new User($_COOKIE["login"], "123");
+            return $this->chatController->render($user);
+        }
+        if ($this->isLoggedIn()) {
+            $user = new UserActiveRecord($_GET["auth_login"], $_GET["auth_password"]);
+            if ($user->getByLogin($_GET["auth_login"])->getPassword() == $_GET["auth_password"]) {
+                setcookie("login", $_GET["auth_login"], time() + $cookieTime);
+                return $this->chatController->render($user);
+            }
+        }
+        if ($this->isRegister()) {
+            $user = new UserActiveRecord($_GET["reg_login"], $_GET["auth_password"]);
             return $this->chatController->render($user);
         }
 //        if (!empty($_POST) && $_GET['action'] === 'remove_from_cart') {
 //            return $this->serviceLocator->get(CartController::class)->removeProductAction((int)$_POST['product_id']);
 //        }
-//
-//        if (!empty($_POST) && $_GET['action'] === 'add_to_cart') {
-//            return $this->serviceLocator->get(CartController::class)->addProductAction((int)$_POST['product_id']);
-//        }
-//
-//        if (($_GET['action'] ?? '') === 'cart') {
-//            return $this->serviceLocator->get(CartController::class)->showAction();
-//        }
 
         return $this->loginController->render();
     }
+
+    private function isSessionExist():bool {
+        return isset($_COOKIE["login"]);
+    }
+    private function isLoggedIn():bool {
+        $isAuthLoginSet = isset($_GET["auth_login"]) && $_GET["auth_login"] != "";
+        $isAuthPasswordSet = isset($_GET["auth_password"]) && $_GET["auth_password"] != "";
+        return $isAuthLoginSet && $isAuthPasswordSet;
+    }
+
+    private function isLoggedOut(): bool {
+        return isset($_GET["action"]) && $_GET["action"] == "logout";
+    }
+    private function isRegister():bool {
+        $isRegLoginSet = isset($_GET["reg_login"]) && $_GET["reg_login"] != "";
+        $isRegPasswordSet = isset($_GET["reg_password"]) && $_GET["reg_password"] != "";
+        $isRegPassword2Set = isset($_GET["reg_password2"]) && $_GET["reg_password2"] != "";
+        return $isRegLoginSet && $isRegPasswordSet && $isRegPassword2Set;
+    }
+    private function isMessageSent(): bool {
+        return isset($_GET["message"]) && $_GET["message"] != "";
+    }
+
 }

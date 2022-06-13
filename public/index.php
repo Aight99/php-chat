@@ -12,7 +12,6 @@ spl_autoload_register(function ($class) {
     $path = dirname(__DIR__ ) . '/src/';
     $extension = '.php';
     $fullPath = $path . str_replace("\\", "/", $class) . $extension;
-//    echo $fullPath . " was loaded <br>";
     require_once $fullPath;
 });
 require_once(dirname(__DIR__ ).'/vendor/autoload.php');

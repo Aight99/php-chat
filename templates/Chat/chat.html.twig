@@ -1,5 +1,9 @@
 {% extends "base.html.twig" %}
 
+{% block navbar %}
+    <a>{{ user.login }}</a>
+    <a href="/?action=logout">Выйти</a>
+{% endblock %}
 {% block content %}
     <h1>Добро пожаловать, {{ user.login }}</h1>
     <div id="chat-block">
