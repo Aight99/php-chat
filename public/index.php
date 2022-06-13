@@ -16,12 +16,6 @@ spl_autoload_register(function ($class) {
     require_once $fullPath;
 });
 require_once(dirname(__DIR__ ).'/vendor/autoload.php');
-//try {
-//    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-//    $dotenv->load();
-//} catch (\Throwable $e) {
-//    echo $e->getMessage();
-//}
 
 
 $application = new Application();
