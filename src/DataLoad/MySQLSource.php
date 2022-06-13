@@ -3,6 +3,12 @@ namespace DataLoad;
 
 class MySQLSource implements DataSource
 {
+    public function __construct(string $jsonPath)
+    {
+//        $this->jsonPath = $jsonPath;
+//        $this->database = $this->decodeJson();
+    }
+
     public function getAllData(): iterable
     {
         // TODO: Implement getAllData() method.

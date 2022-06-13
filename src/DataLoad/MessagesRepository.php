@@ -15,7 +15,7 @@ class MessagesRepository
 
     public function addMessage(Message $message) : void
     {
-        $this->dataSource->addData($message->getTime(), $message->getMessageText(), $message->getSenderLogin(), $message->getReceiverLogin());
+        $this->dataSource->addData($message->getTime(), $message->getText(), $message->getSenderLogin(), $message->getReceiverLogin());
     }
 
     public function getMessageList() : iterable

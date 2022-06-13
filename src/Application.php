@@ -31,16 +31,20 @@ class Application
         $isRegLoginSet = isset($_GET["reg_login"]) && $_GET["reg_login"] != "";
         $isRegPasswordSet = isset($_GET["reg_password"]) && $_GET["reg_password"] != "";
         $isRegPassword2Set = isset($_GET["reg_password2"]) && $_GET["reg_password2"] != "";
+        $isMessageSet = isset($_GET["message"]) && $_GET["message"] != "";
 
         $usersJsonPath = dirname(__DIR__) . '/src/' . "DataLoad\JsonFiles\Users.json";
         $messagesJsonPath = dirname(__DIR__) . '/src/' . "DataLoad\JsonFiles\Messages.json";
         $userRepository = new UsersRepository(new JsonSource($usersJsonPath));
         $messageRepository = new MessagesRepository(new JsonSource($messagesJsonPath));
 
+        if ($isMessageSet) {
+            return $_GET["message"] . " " . $_GET["receiver"];
+        }
         if ($isAuthLoginSet) {
             $user = new User($_GET["auth_login"], "123");
-            $messages = $messageRepository->getMessageList();
-            return $this->chatController->render($messages, $user);
+//            $messages = $messageRepository->getMessageList();
+            return $this->chatController->render($user);
         }
 //        if (!empty($_POST) && $_GET['action'] === 'remove_from_cart') {
 //            return $this->serviceLocator->get(CartController::class)->removeProductAction((int)$_POST['product_id']);

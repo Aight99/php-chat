@@ -2,39 +2,58 @@
 
 {% block content %}
     <h1>Добро пожаловать, {{ user.login }}</h1>
-    {{ dump(messages) }}
-    {% for message in messages %}
-        <p>
-            {{constant('PUBLIC_MESSAGE', message)}} <br>
-            {{message.receiverLogin}} <br>
-            {{user.login}} <br>
-        </p>
-        {# Вот эту штуку переопределяем в админке #}
-        {% if message.receiverLogin == user.login or message.receiverLogin == message.PUBLIC_MESSAGE %}
+    <div id="chat-block">
+        {% for message in messages %}
+            {# Вот эту штуку переопределяем в админке #}
+            {#        {% if message.receiverLogin == user.login or message.receiverLogin == PUBLIC_MESSAGE %}#}
             <div class="message">
                 {% if message.senderLogin == user.login %}
                     <div class="sent">
-                        <div class="message-time">
+                        <div class="message-head">
                             {{ message.time }}
                         </div>
                         <div class="message-text">
-                            {{ message.messageText }}
+                            {{ message.text }}
                         </div>
                     </div>
                 {% else %}
                     <div class="received">
-                        <div class="message-time">
-                            {{ message.time }}
+                        <div class="message-head">
+                            {{ message.senderLogin }} at {{ message.time }}
                         </div>
                         <div class="message-text">
-                            {{ message.messageText }}
+                            {{ message.text }}
                         </div>
                     </div>
                 {% endif %}
             </div>
-        {% endif %}
-    {% else %}
-        Сообщений пока нет
-    {% endfor %}
+            {#        {% endif %}#}
+        {% else %}
+            Сообщений пока нет
+        {% endfor %}
+    </div>
+    <div id="chat-input">
+        <div class="input-container">
+            <input id="msg_text" class="input" type="text" placeholder=" " />
+            <label for="msg_text" class="placeholder">Сообщение</label>
+        </div>
+        <div class="input-container">
+            <input id="receiver" class="input" type="text" placeholder=" " />
+            <label for="receiver" class="placeholder-hide">Получатель (если ЛС)</label>
+        </div>
+        <div class="input-container">
+            <button type="submit" class="submit" onclick="sendMessage()">Отправить</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        function sendMessage() {
+            let message = document.getElementById("msg_text").value;
+            let receiver = document.getElementById("receiver").value;
+            location.href = "/?action=send&message=" + message + "&receiver=" + receiver;
+        }
+    </script>
 {% endblock %}
 

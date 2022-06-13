@@ -2,6 +2,7 @@
     "require": {
         "monolog/monolog": "^2.6",
         "twig/twig": "^3.0",
-        "ext-json": "*"
+        "ext-pdo": "*",
+        "vlucas/phpdotenv": "^5.4"
     }
 }

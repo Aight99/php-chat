@@ -1,5 +1,100 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Roboto&display=swap');
 
+/* Окно чата */
+
+.received {
+    background-color: var(--main-color);
+    text-align: start;
+    color: var(--main-bg-color);
+    border-radius: 12px;
+    margin: 6px;
+    padding: 5px 20px 5px 20px;
+    overflow-wrap: break-word;
+    font-size: 20px;
+}
+
+.sent {
+    background-color: #232323;
+    text-align: end;
+    color: var(--main-bg-color);
+    border-radius: 12px;
+    margin: 6px;
+    padding: 5px 20px 5px 20px;
+    overflow-wrap: break-word;
+    font-size: 20px;
+}
+
+.message-head {
+    margin-bottom: 3px;
+    font-size: 16px;
+}
+
+#chat-block {
+    height: 590px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+#chat-input {
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+#chat-input .input-container {
+    height: 50px !important;
+    position: relative !important;
+    width: 100% !important;
+    margin-top: 5px !important;
+}
+
+#chat-input .input {
+    max-width: 100% !important;
+}
+#chat-input .submit {
+    margin-top: 5px !important;
+    max-width: 100% !important;
+}
+
+#chat-input.input {
+    background-color:var(--main-color);
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 20px 0;
+}
+
+
+.placeholder-hide {
+    color: #414141;
+    left: 20px;
+    line-height: 14px;
+    pointer-events: none;
+    position: absolute;
+    transform-origin: 0 50%;
+    transition: transform 200ms, color 200ms;
+    top: 20px;
+}
+
+.input:focus ~ .placeholder-hide,
+.input:not(:placeholder-shown) ~ .placeholder-hide {
+    transform: translateY(-40px) translateX(10px) scale(0);
+}
+
+.input:not(:placeholder-shown) ~ .placeholder-hide {
+    color: var(--main-color);
+    font-weight: bold;
+}
+
+.input:focus ~ .placeholder {
+    color: var(--main-color);
+    font-weight: bold;
+}
+
 /* Общие настройки страницы */
 
 :root {
@@ -51,7 +146,7 @@ body {
 }
 
 .center {
-    width: 50%;
+    width: 50%; /*Убирать на мобилках*/
     margin: auto auto;
     text-align: center;
 }
@@ -239,7 +334,7 @@ a {
 }
 
 .input {
-    background-color:var(--main-color);;
+    background-color:var(--main-color);
     border-radius: 12px;
     border: 0;
     box-sizing: border-box;
@@ -251,9 +346,8 @@ a {
     width: 170%;
 }
 
-
 .placeholder {
-    color: #656565;
+    color: #414141;
     left: 20px;
     line-height: 14px;
     pointer-events: none;
