@@ -15,12 +15,18 @@ class MessageMapper
     }
 
 
-    public function getAll()
+    public function getAll(): array
     {
-        $sql = 'SELECT * from message';
+        $sql = 'SELECT * FROM message ORDER BY `time` DESC';
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll();
+        $messages = $stmt->fetchAll();
+        $result = [];
+        foreach ($messages as $message) {
+            $mesObj = new Message($message["text"], $message["sender_login"], $message["receiver_login"], (int)$message["time"]);
+            $result[] = $mesObj;
+        }
+        return $result;
     }
 
     public function getByID(int $id): ?Message

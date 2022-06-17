@@ -20,6 +20,7 @@ class MessageRepository
     {
         $this->mapper = new MessageMapper();
         $this->storage = [];
+        $this->updateStorage();
     }
 
     public function updateStorage()

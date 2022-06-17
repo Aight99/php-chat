@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Controller\ChatController;
 use Controller\LoginController;
-use DataLoad\JsonSource;
-use DataLoad\MessagesRepository;
-use DataLoad\UsersRepository;
+use Model\Message;
 use Model\User;
 use Model\UserActiveRecord;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -21,26 +21,38 @@ class Application
     {
         $loader = new FilesystemLoader(dirname(__DIR__) . "/templates/");
         $twig = new Environment($loader);
-        $this->loginController = new LoginController($twig);
-        $this->chatController = new ChatController($twig);
+        $logger = new Logger('logger');
+        $logger->pushHandler(new StreamHandler((dirname(__DIR__ ) . '/Logs/DatabaseInfo.log'), Logger::INFO));
+        $logger->pushHandler(new StreamHandler((dirname(__DIR__ ) . '/Logs/Debug.log'), Logger::DEBUG));
+        $this->loginController = new LoginController($twig, $logger);
+        $this->chatController = new ChatController($twig, $logger);
     }
 
     public function run(): string
     {
         $cookieTime = 3600;
+        $logger = new Logger('logger');
+        $logger->pushHandler(new StreamHandler((dirname(__DIR__ ) . '/Logs/Debug.log'), Logger::DEBUG));
+        try {
+            $logger->debug("Run is working");
+        } catch (\Throwable $e) { // For PHP 7
+            echo $e->getMessage();
+        }
 
-
-//        $userRepository = new UsersRepository(new JsonSource($usersJsonPath));
-//        $messageRepository = new MessagesRepository(new JsonSource($messagesJsonPath));
         if ($this->isLoggedOut()) {
             setcookie ("login", "", time() - $cookieTime);
             return $this->loginController->render();
         }
         if ($this->isSessionExist()) {
+            $logger->debug("Session is working");
             if ($this->isMessageSent()) {
                 $user = new UserActiveRecord($_COOKIE["login"], "123");
+                $receiver = ($_GET["receiver"] == "") ? Message::PUBLIC_MESSAGE : $_GET["receiver"];
+                $text = $_GET["message"];
+                $logger->debug("GETs is working");
+                $this->chatController->createMessage($user, $text, $receiver);
+                $logger->debug("Create message is working");
                 return $this->chatController->render($user);
-                return $_GET["message"] . " " . $_GET["receiver"];
             }
             $user = new User($_COOKIE["login"], "123");
             return $this->chatController->render($user);
@@ -52,13 +64,11 @@ class Application
                 return $this->chatController->render($user);
             }
         }
-        if ($this->isRegister()) {
-            $user = new UserActiveRecord($_GET["reg_login"], $_GET["auth_password"]);
+        if ($this->isRegister() && $_GET["reg_password"] == $_GET["reg_password2"]) {
+            $user = new UserActiveRecord($_GET["reg_login"], $_GET["reg_password"]);
+            $user->save();
             return $this->chatController->render($user);
         }
-//        if (!empty($_POST) && $_GET['action'] === 'remove_from_cart') {
-//            return $this->serviceLocator->get(CartController::class)->removeProductAction((int)$_POST['product_id']);
-//        }
 
         return $this->loginController->render();
     }
@@ -71,7 +81,6 @@ class Application
         $isAuthPasswordSet = isset($_GET["auth_password"]) && $_GET["auth_password"] != "";
         return $isAuthLoginSet && $isAuthPasswordSet;
     }
-
     private function isLoggedOut(): bool {
         return isset($_GET["action"]) && $_GET["action"] == "logout";
     }

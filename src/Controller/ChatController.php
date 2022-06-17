@@ -4,39 +4,43 @@ declare(strict_types=1);
 
 namespace Controller;
 
+use Monolog\Logger;
 use PDO;
 use Model\Message;
 use Model\User;
+use Repository\MessageRepository;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 
 class ChatController
 {
+    private MessageRepository $messageRepository;
     private Environment $twig;
+    private Logger $logger;
 
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, Logger $logger)
     {
         $this->twig = $twig;
+        $this->logger = $logger;
+        $this->messageRepository = new MessageRepository();
         $twig->addExtension(new DebugExtension());
     }
 
     public function render(User $user) : string
     {
-        $msgArr = [];
-        $msgArr[] = new Message("Pokemon is the best game ever!", "Leon", "N");
-        $db = new PDO('mysql:host=localhost;dbname=chat', 'root', '12345Qwerty');
-        $query = "SELECT * FROM message ORDER BY `time` DESC";
-        $statement = $db->prepare($query);
-        $statement->execute();
-        $messages = $statement->fetchAll();
-        foreach ($messages as $message) {
-            $mesObj = new Message($message["text"], $message["sender_login"], $message["receiver_login"], (int)$message["time"]);
-            $msgArr[] = $mesObj;
-        }
         // Добавить View страницы и рендерить через неё
         return $this->twig->render('/Chat/chat.html.twig', [
-            'messages' => $msgArr,
+            'messages' => $this->messageRepository->getAll(),
             'user' => $user
         ]);
+    }
+
+    public function createMessage(User $user, string $text, string $receiver) : void
+    {
+        $time = time();
+        $login = $user->getLogin();
+        $this->logger->debug("Trying to add $time by $login");
+        $this->messageRepository->store(new Message($text, $login, $receiver, $time));
+        $this->logger->info("Message $time by $login was added in the database");
     }
 }

@@ -1,11 +1,8 @@
 
 <?php
 
-use Controller\LoginController;
-use Model\User;
-use Model\Message;
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 // В Composer.json нет автозагрузки моих классов
 spl_autoload_register(function ($class) {
@@ -17,13 +14,15 @@ spl_autoload_register(function ($class) {
 require_once(dirname(__DIR__ ).'/vendor/autoload.php');
 
 
+logDebug("a");
+echo 'a';
 $application = new Application();
 echo $application->run();
 
 
-//function logDebug(string $message = "")
-//{
-//    $logger = new Logger('logger');
-//    $logger->pushHandler(new StreamHandler((dirname(__DIR__ ) . '/Logs/Debug.log'), Logger::DEBUG));
-//    $logger->debug($message);
-//}
+function logDebug(string $message = "")
+{
+    $logger = new Logger('logger');
+    $logger->pushHandler(new StreamHandler((dirname(__DIR__ ) . '/Logs/Debug.log'), Logger::DEBUG));
+    $logger->debug($message);
+}
