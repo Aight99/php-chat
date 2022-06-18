@@ -3,14 +3,17 @@
 namespace Repository;
 
 use Model\Message;
+use Monolog\Logger;
 use PDO;
 
 class MessageMapper
 {
     private PDO $connection;
+    private Logger $logger;
 
-    public function __construct()
+    public function __construct(Logger $logger)
     {
+        $this->logger = $logger;
         $this->connection = new PDO('mysql:host=localhost;dbname=chat', 'root', '12345Qwerty');
     }
 
@@ -58,13 +61,25 @@ class MessageMapper
         $sender = $message->getSenderLogin();
         $receiver = $message->getReceiverLogin();
         $time = $message->getTime();
+        $this->logger->debug("Trying to INSERT $time");
         $sql = 'INSERT INTO message(text, sender_login, receiver_login, time) values(:text, :sender, :receiver, :time)';
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam('text', $text);
         $stmt->bindParam('sender', $sender);
         $stmt->bindParam('receiver', $receiver);
         $stmt->bindParam('time', $time);
+
+        $this->logger->debug("INSERTING $time done");
+        //
+//        ob_start();
+//        $stmt->debugDumpParams();
+//        $log = ob_get_contents();
+//        ob_end_clean();
+//        $this->logger->debug("Trying $log");
+        //
         $stmt->execute();
+        $this->logger->debug("Error info " . $stmt->errorInfo()[2]);
+        $this->logger->debug("INSERTING $time done");
     }
 
     public function delete(Message $message)

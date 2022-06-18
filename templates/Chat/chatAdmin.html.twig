@@ -9,40 +9,40 @@
     <div id="chat-block">
         {% for message in messages %}
             {# Вот эту штуку переопределяем в админке #}
-            {% if message.receiverLogin == user.login or message.receiverLogin == PUBLIC_MESSAGE %}
-                <div class="message">
-                    {% if message.senderLogin == user.login %}
-                        <div class="sent">
-                            <div class="message-head">
-                                {{ message.time }}
-                            </div>
-                            <div class="message-text">
-                                {{ message.text }}
-                            </div>
+            {#        {% if message.receiverLogin == user.login or message.receiverLogin == PUBLIC_MESSAGE %}#}
+            <div class="message">
+                {% if message.senderLogin == user.login %}
+                    <div class="sent">
+                        <div class="message-head">
+                            {{ message.time }}
                         </div>
-                    {% else %}
-                        <div class="received">
-                            <div class="message-head">
-                                {{ message.senderLogin }} at {{ message.time }}
-                            </div>
-                            <div class="message-text">
-                                {{ message.text }}
-                            </div>
+                        <div class="message-text">
+                            {{ message.text }}
                         </div>
-                    {% endif %}
-                </div>
-            {% endif %}
+                    </div>
+                {% else %}
+                    <div class="received">
+                        <div class="message-head">
+                            {{ message.senderLogin }} at {{ message.time }}
+                        </div>
+                        <div class="message-text">
+                            {{ message.text }}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            {#        {% endif %}#}
         {% else %}
             Сообщений пока нет
         {% endfor %}
     </div>
     <div id="chat-input">
         <div class="input-container">
-            <input id="msg_text" class="input" type="text" placeholder=" "/>
+            <input id="msg_text" class="input" type="text" placeholder=" " />
             <label for="msg_text" class="placeholder">Сообщение</label>
         </div>
         <div class="input-container">
-            <input id="receiver" class="input" type="text" placeholder=" "/>
+            <input id="receiver" class="input" type="text" placeholder=" " />
             <label for="receiver" class="placeholder-hide">Получатель (если ЛС)</label>
         </div>
         <div class="input-container">

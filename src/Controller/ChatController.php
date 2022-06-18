@@ -5,34 +5,32 @@ declare(strict_types=1);
 namespace Controller;
 
 use Monolog\Logger;
-use PDO;
 use Model\Message;
 use Model\User;
 use Repository\MessageRepository;
-use Twig\Environment;
-use Twig\Extension\DebugExtension;
+use View\ChatAdminPage;
+use View\ChatPage;
 
 class ChatController
 {
     private MessageRepository $messageRepository;
-    private Environment $twig;
+    private ChatPage $page;
     private Logger $logger;
 
-    public function __construct(Environment $twig, Logger $logger)
+    public function __construct(MessageRepository $messageRepository, ChatPage $page, Logger $logger)
     {
-        $this->twig = $twig;
+        $this->page = $page;
         $this->logger = $logger;
-        $this->messageRepository = new MessageRepository();
-        $twig->addExtension(new DebugExtension());
+        $this->messageRepository = $messageRepository;
     }
 
     public function render(User $user) : string
     {
-        // Добавить View страницы и рендерить через неё
-        return $this->twig->render('/Chat/chat.html.twig', [
-            'messages' => $this->messageRepository->getAll(),
-            'user' => $user
-        ]);
+        return $this->page->renderHTML($this->messageRepository->getAll(), $user);
+    }
+
+    public function setAdminView() {
+        $this->page = new ChatAdminPage($this->page->getTwig());
     }
 
     public function createMessage(User $user, string $text, string $receiver) : void

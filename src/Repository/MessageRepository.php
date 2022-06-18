@@ -16,9 +16,9 @@ class MessageRepository
     private MessageMapper $mapper;
     private array $storage;
 
-    public function __construct()
+    public function __construct(MessageMapper $mapper)
     {
-        $this->mapper = new MessageMapper();
+        $this->mapper = $mapper;
         $this->storage = [];
         $this->updateStorage();
     }

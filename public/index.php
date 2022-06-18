@@ -13,9 +13,6 @@ spl_autoload_register(function ($class) {
 });
 require_once(dirname(__DIR__ ).'/vendor/autoload.php');
 
-
-logDebug("a");
-echo 'a';
 $application = new Application();
 echo $application->run();
 
