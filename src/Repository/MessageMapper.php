@@ -60,7 +60,7 @@ class MessageMapper
         $text = $message->getText();
         $sender = $message->getSenderLogin();
         $receiver = $message->getReceiverLogin();
-        $time = $message->getTime();
+        $time = $message->getRawTime();
         $this->logger->debug("Trying to INSERT $time");
         $sql = 'INSERT INTO message(text, sender_login, receiver_login, time) values(:text, :sender, :receiver, :time)';
         $stmt = $this->connection->prepare($sql);
@@ -84,7 +84,7 @@ class MessageMapper
 
     public function delete(Message $message)
     {
-        $time = $message->getTime();
+        $time = $message->getRawTime();
         $sender = $message->getSenderLogin();
         $sql = 'DELETE FROM message WHERE time= :time AND sender_login= :sender';
         $stmt = $this->connection->prepare($sql);

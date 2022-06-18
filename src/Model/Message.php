@@ -39,6 +39,11 @@ class Message
         return $this->text;
     }
 
+    public function getRawTime(): string
+    {
+        return date($this->time);
+    }
+
     public function getTime(): string
     {
         return date("F j H:i", $this->time);
