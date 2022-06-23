@@ -14,7 +14,7 @@
                 {% if message.senderLogin == user.login %}
                     <div class="sent">
                         <div class="message-head">
-                            {{ message.time }}
+                            at {{ message.time }} to {{message.receiverLogin}}
                         </div>
                         <div class="message-text">
                             {{ message.text }}

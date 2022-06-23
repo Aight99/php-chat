@@ -4,7 +4,7 @@ namespace Model;
 
 class Message
 {
-    public const PUBLIC_MESSAGE = -1;
+    public const PUBLIC_MESSAGE = "@all";
     public const CURRENT_TIME = -1;
 
     private int $time;

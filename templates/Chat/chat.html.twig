@@ -9,12 +9,12 @@
     <div id="chat-block">
         {% for message in messages %}
             {# Вот эту штуку переопределяем в админке #}
-            {% if message.receiverLogin == user.login or message.receiverLogin == PUBLIC_MESSAGE %}
+            {% if message.senderLogin == user.Login or message.receiverLogin == user.login or message.receiverLogin == PUBLIC_MESSAGE %}
                 <div class="message">
                     {% if message.senderLogin == user.login %}
                         <div class="sent">
                             <div class="message-head">
-                                {{ message.time }}
+                                at {{ message.time }} to {{message.receiverLogin}}
                             </div>
                             <div class="message-text">
                                 {{ message.text }}
