@@ -36,7 +36,7 @@ class UserActiveRecord extends User
         $stmt->bindParam('login', $login);
         $stmt->execute();
         $user = $stmt->fetch();
-        if (isset($user)) {
+        if (isset($user) && $user) {
             return new UserActiveRecord($user['login'], $user['password']);
         } else {
             return null;
