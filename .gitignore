@@ -8,3 +8,5 @@
 /vendor/
 /.idea
 /Logs/
+/Logs/DatabaseInfo.log
+/Logs/Debug.log

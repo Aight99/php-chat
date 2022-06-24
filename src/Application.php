@@ -40,6 +40,7 @@ class Application
 
         if ($this->isLoggedOut()) {
             setcookie("login", "", time() - $cookieTime);
+            setcookie("pass", "", time() - $cookieTime);
             return $this->loginController->render();
         }
         if ($this->isSessionExist()) {
@@ -47,8 +48,8 @@ class Application
             $user = $user->getByLogin($_COOKIE["login"]);
             if (md5($user->getPassword() . "salt") == $_COOKIE["pass"]) {
                 if ($this->isMessageSent()) {
-                    $receiver = ($_GET["receiver"] == "") ? Message::PUBLIC_MESSAGE : $_GET["receiver"];
-                    $text = $_GET["message"];
+                    $receiver = ($_POST["receiver"] == "") ? Message::PUBLIC_MESSAGE : $_POST["receiver"];
+                    $text = $_POST["msg_text"];
                     $this->chatController->createMessage($user, $text, (string)$receiver);
                     if ($_COOKIE["login"] == $admin) {
                         $this->chatController->setAdminView();
@@ -62,19 +63,19 @@ class Application
             }
         }
         if ($this->isLoggedIn()) {
-            $user = new UserActiveRecord($_GET["auth_login"], $_GET["auth_password"]);
-            $user = $user->getByLogin($_GET["auth_login"]);
-            if (!is_null($user) && $user->getPassword() == $_GET["auth_password"]) {
-                setcookie("login", $_GET["auth_login"], time() + $cookieTime);
-                setcookie("pass", md5($_GET["auth_login"] . "salt"), time() + $cookieTime);
-                if ($_GET["auth_login"] == $admin && $_GET["auth_password"] == $admin) {
+            $user = new UserActiveRecord($_POST["auth_login"], $_POST["auth_password"]);
+            $user = $user->getByLogin($_POST["auth_login"]);
+            if (!is_null($user) && $user->getPassword() == $_POST["auth_password"]) {
+                setcookie("login", $_POST["auth_login"], time() + $cookieTime);
+                setcookie("pass", md5($_POST["auth_password"] . "salt"), time() + $cookieTime);
+                if ($_POST["auth_login"] == $admin && $_POST["auth_password"] == $admin) {
                     $this->chatController->setAdminView();
                 }
                 return $this->chatController->render($user);
             }
         }
-        if ($this->isRegister() && $_GET["reg_password"] == $_GET["reg_password2"]) {
-            $user = new UserActiveRecord($_GET["reg_login"], $_GET["reg_password"]);
+        if ($this->isRegister() && $_POST["reg_password"] == $_POST["reg_password2"]) {
+            $user = new UserActiveRecord($_POST["reg_login"], $_POST["reg_password"]);
             $user->save();
             return $this->chatController->render($user);
         }
@@ -88,8 +89,8 @@ class Application
 
     private function isLoggedIn(): bool
     {
-        $isAuthLoginSet = isset($_GET["auth_login"]) && $_GET["auth_login"] != "";
-        $isAuthPasswordSet = isset($_GET["auth_password"]) && $_GET["auth_password"] != "";
+        $isAuthLoginSet = isset($_POST["auth_login"]) && $_POST["auth_login"] != "";
+        $isAuthPasswordSet = isset($_POST["auth_password"]) && $_POST["auth_password"] != "";
         return $isAuthLoginSet && $isAuthPasswordSet;
     }
 
@@ -100,14 +101,14 @@ class Application
 
     private function isRegister(): bool
     {
-        $isRegLoginSet = isset($_GET["reg_login"]) && $_GET["reg_login"] != "";
-        $isRegPasswordSet = isset($_GET["reg_password"]) && $_GET["reg_password"] != "";
-        $isRegPassword2Set = isset($_GET["reg_password2"]) && $_GET["reg_password2"] != "";
+        $isRegLoginSet = isset($_POST["reg_login"]) && $_POST["reg_login"] != "";
+        $isRegPasswordSet = isset($_POST["reg_password"]) && $_POST["reg_password"] != "";
+        $isRegPassword2Set = isset($_POST["reg_password2"]) && $_POST["reg_password2"] != "";
         return $isRegLoginSet && $isRegPasswordSet && $isRegPassword2Set;
     }
 
     private function isMessageSent(): bool
     {
-        return isset($_GET["message"]) && $_GET["message"] != "";
+        return isset($_POST["msg_text"]) && $_POST["msg_text"] != "";
     }
 }

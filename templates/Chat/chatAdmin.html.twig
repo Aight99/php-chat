@@ -8,8 +8,6 @@
     <h1>Добро пожаловать, {{ user.login }}</h1>
     <div id="chat-block">
         {% for message in messages %}
-            {# Вот эту штуку переопределяем в админке #}
-            {#        {% if message.receiverLogin == user.login or message.receiverLogin == PUBLIC_MESSAGE %}#}
             <div class="message">
                 {% if message.senderLogin == user.login %}
                     <div class="sent">
@@ -31,33 +29,24 @@
                     </div>
                 {% endif %}
             </div>
-            {#        {% endif %}#}
         {% else %}
             Сообщений пока нет
         {% endfor %}
     </div>
     <div id="chat-input">
-        <div class="input-container">
-            <input id="msg_text" class="input" type="text" placeholder=" " />
-            <label for="msg_text" class="placeholder">Сообщение</label>
-        </div>
-        <div class="input-container">
-            <input id="receiver" class="input" type="text" placeholder=" " />
-            <label for="receiver" class="placeholder-hide">Получатель (если ЛС)</label>
-        </div>
-        <div class="input-container">
-            <button type="submit" class="submit" onclick="sendMessage()">Отправить</button>
-        </div>
+        <form action="/" method="post">
+            <div class="input-container">
+                <input id="msg_text" name="msg_text" class="input" type="text" placeholder=" "/>
+                <label for="msg_text" class="placeholder">Сообщение</label>
+            </div>
+            <div class="input-container">
+                <input id="receiver" name="receiver" class="input" type="text" placeholder=" "/>
+                <label for="receiver" class="placeholder-hide">Получатель (если ЛС)</label>
+            </div>
+            <div class="input-container">
+                <button type="submit" class="submit">Отправить</button>
+            </div>
+        </form>
     </div>
-{% endblock %}
-
-{% block javascripts %}
-    <script type="text/javascript">
-        function sendMessage() {
-            let message = document.getElementById("msg_text").value;
-            let receiver = document.getElementById("receiver").value;
-            location.href = "/?action=send&message=" + message + "&receiver=" + receiver;
-        }
-    </script>
 {% endblock %}
 
